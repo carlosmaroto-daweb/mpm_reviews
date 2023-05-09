@@ -1,0 +1,27 @@
+.flex-container {
+    width: 60%;
+    margin: 0 auto;
+    
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.generic {
+    flex: 1 0 49%;
+}
+
+.generic h4, .horario h4 {
+    width: 100%;
+    background-color: rba();
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--main-color);
+    padding: 10px 0;
+}
+
+.horario {
+    flex: 1 0 49%;
+    margin-left: 5px;
+}
