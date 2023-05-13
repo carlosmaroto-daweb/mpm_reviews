@@ -24,6 +24,11 @@
     
     class Reviews {
         
+        function __construct() {
+            add_shortcode('mpm_show_main_fields', array($this, 'mpm_show_main_fields_shortcode'));
+            add_shortcode('mpm_show_fields', array($this, 'mpm_show_fields_shortcode'));
+        }
+        
         function execute_actions() {
             // Registramos nuestro custom-post-type, tiene que estar disponible desde el inicio
             add_action('init', array($this, 'mpm_register_review'));
@@ -31,8 +36,14 @@
             // Crear la metabox que contendrá los custom-post-fields del CPT
             add_action('add_meta_boxes', array($this, 'mpm_add_metabox'));
             
+            // Guardar el contenido de los custom-post-fields en la BBDD
+            add_action('save_post', array($this, 'mpm_save_custom_fields'));
+            
             // Añadir hojas de estilo y JS al back-end de nuestro plugin
             add_action('admin_enqueue_scripts', array($this, 'mpm_admin_enqueue_scripts'));
+            
+            // Añadir hojas de estilo y JS al front-end de nuestro plugin
+            add_action('wp_enqueue_scripts', array($this, 'mpm_front_enqueue_scripts'));
         }
         
         /**
@@ -75,12 +86,12 @@
                 'has_archive'   => true,                            // El CPT apareceran en nuestro archive.php y search.php
                 'menu_icon'     => 'dashicons-smiley',              // Clase css para que aparezca el icono asociado a la opción del menú
                 'rewrite'       => array('slug' => 'mpm-reviews'),  // El slug de mi CPT
-                
-                // PENDIENTE!!!!!!!!
-                //'query_var'     => true, // Las variables de la query accesibles a través de la función query_var
-                //'taxonomies'  => array('post_tag', 'category'), // Activo las categorias y tags de los post normales para el CPT
             );
             register_post_type('mpm_reviews', $args);
+            
+            // Activar los paneles de categorías y tgas compartidas con los posts normales
+            register_taxonomy_for_object_type('category', 'mpm_reviews');
+            register_taxonomy_for_object_type('post_tag', 'mpm_reviews');
             
             flush_rewrite_rules();
         }
@@ -109,12 +120,12 @@
             
             // Data harvesting
             $numpistas      = get_post_meta($review->ID, 'mpm_numpistas', true);
-            $totalkms       = get_post_meta($review->ID, 'mpm_$totalkms', true);
+            $totalkms       = get_post_meta($review->ID, 'mpm_totalkms', true);
+            $totalremontes  = get_post_meta($review->ID, 'mpm_totalremontes', true);
             $negras         = get_post_meta($review->ID, 'mpm_negras', true);
             $rojas          = get_post_meta($review->ID, 'mpm_rojas', true);
             $azules         = get_post_meta($review->ID, 'mpm_azules', true);
             $verdes         = get_post_meta($review->ID, 'mpm_verdes', true);
-            $totalremontes  = get_post_meta($review->ID, 'mpm_totalremontes', true);
             $parking        = get_post_meta($review->ID, 'mpm_parking', true);
             $tarifa         = get_post_meta($review->ID, 'mpm_tarifa', true);
             $anio           = get_post_meta($review->ID, 'mpm_anio', true);
@@ -132,8 +143,47 @@
                             <input type="text" id="numpistas" name="mpm_numpistas" value="<?php echo $numpistas;?>"/>
                         </div>
                         <div class="custom-field">
-                            <label for="totalkms">Total KMs:</label>
+                            <label for="totalkms">Total KMs esquiables:</label>
                             <input type="text" id="totalkms" name="mpm_totalkms" value="<?php echo $totalkms;?>"/>
+                        </div>
+                        <div class="custom-field">
+                            <label for="totalremontes">Total remontes:</label>
+                            <input type="text" id="totalremontes" name="mpm_totalremontes" value="<?php echo $totalremontes;?>"/>
+                        </div>
+                        <label class="numpistas">Número de pistas:</label>
+                        <div class="custom-field banderas">
+                            <div class="negras">
+                                <span class="dashicons dashicons-flag"></span>
+                                <input type="text" id="negras" name="mpm_negras" value="<?php echo $negras;?>"/>
+                            </div>
+                            <div class="rojas">
+                                <span class="dashicons dashicons-flag"></span>
+                                <input type="text" id="rojas" name="mpm_rojas" value="<?php echo $rojas;?>"/>
+                            </div>
+                            <div class="azules">
+                                <span class="dashicons dashicons-flag"></span>
+                                <input type="text" id="azules" name="mpm_azules" value="<?php echo $azules;?>"/>
+                            </div>
+                            <div class="verdes">
+                                <span class="dashicons dashicons-flag"></span>
+                                <input type="text" id="verdes" name="mpm_verdes" value="<?php echo $verdes;?>"/>
+                            </div>
+                        </div>
+                        <div class="custom-field parking">
+                            <label for="parking">Parking:</label>
+                            <input type="checkbox" id="parking" name="mpm_parking" value="SI" <?php if($parking=="SI") echo "checked";?>/>
+                        </div>
+                        <div class="custom-field">
+                            <label for="tarifa">Tarifa:</label>
+                            <input type="text" id="tarifa" name="mpm_tarifa" value="<?php echo $tarifa;?>"/>
+                        </div>
+                        <div class="custom-field">
+                            <label for="anio">Año:</label>
+                            <input type="text" id="anio" name="mpm_anio" value="<?php echo $anio;?>"/>
+                        </div>
+                        <div class="custom-field">
+                            <label for="rating">Rating:</label>
+                            <input type="text" id="rating" name="mpm_rating" value="<?php echo $rating;?>"/>
                         </div>
                     </div>
                     <div class="horario">
@@ -144,11 +194,108 @@
         }
         
         /**
+         *  Función de callback que guardará los custom-post-fields en la BBDD
+         *  @param $post_id int post ID
+         */
+        function mpm_save_custom_fields($post_id) {
+            // Determinar si estamos en autosave
+            $is_autosave = wp_is_post_autosave($post_id);
+            // Determinar si estamos en revisión
+            $is_revision = wp_is_post_revision($post_id);
+            // Determinar si el campo nonce es válido
+            $is_valid_nonce = (isset($_POST['mpm_review_nonce']) && wp_verify_nonce($_POST['mpm_review_nonce'], basename(__FILE__)))? true : false;
+            
+            if ($is_autosave || $is_revision || !$is_valid_nonce) {
+                return;
+            }
+            // Comprobar que el usuario tiene permisos
+                                // capacidad - sobre qué
+            if (!current_user_can('edit_post', $post_id)) {
+                return;
+            }
+            // Guardamos los campos en la BBDD
+            $numpistas     = sanitize_text_field($_POST['mpm_numpistas']);
+            $totalkms      = sanitize_text_field($_POST['mpm_totalkms']);
+            $totalremontes = sanitize_text_field($_POST['mpm_totalremontes']);
+            $negras        = sanitize_text_field($_POST['mpm_negras']);
+            $rojas         = sanitize_text_field($_POST['mpm_rojas']);
+            $azules        = sanitize_text_field($_POST['mpm_azules']);
+            $verdes        = sanitize_text_field($_POST['mpm_verdes']);
+            
+            if(isset($_POST['mpm_parking'])) {
+                $parking = "SI";
+            } else {
+                $parking = "";
+            }
+            
+            $tarifa = sanitize_text_field($_POST['mpm_tarifa']);
+            $anio   = sanitize_text_field($_POST['mpm_anio']);
+            $rating = sanitize_text_field($_POST['mpm_rating']);
+            
+            update_post_meta($post_id, 'mpm_numpistas',     $numpistas);
+            update_post_meta($post_id, 'mpm_totalkms',      $totalkms);
+            update_post_meta($post_id, 'mpm_totalremontes', $totalremontes);
+            update_post_meta($post_id, 'mpm_negras',        $negras);
+            update_post_meta($post_id, 'mpm_rojas',         $rojas);
+            update_post_meta($post_id, 'mpm_azules',        $azules);
+            update_post_meta($post_id, 'mpm_verdes',        $verdes);
+            update_post_meta($post_id, 'mpm_parking',       $parking);
+            update_post_meta($post_id, 'mpm_tarifa',        $tarifa);
+            update_post_meta($post_id, 'mpm_anio',          $anio);
+            update_post_meta($post_id, 'mpm_rating',        $rating);
+        }
+        
+        /**
          * Función que añade JS y hojas de estilo al admin área de mi CPT
          */
         function mpm_admin_enqueue_scripts() {
             wp_register_style('mpm_admin_styles', plugins_url('/admin/css/admin.css', __FILE__));
             wp_enqueue_style('mpm_admin_styles');
+        }
+        
+        /**
+         * Función que añade JS y hojas de estilo al front-end de mi CPT
+         */
+        function mpm_front_enqueue_scripts() {
+            wp_register_style('mpm_front_styles', plugins_url('/css/front.css', __FILE__));
+            wp_enqueue_style('mpm_front_styles');
+        }
+        
+        /***************************************** SHORTCODES *************************************/
+        
+        /**
+         *  Función visualiza los custom-fields esenciales del custom-post type mediante shortcode
+         *  @atts array Post ID
+         */
+        function mpm_show_main_fields_shortcode($atts) {
+            // Recuperamos el ID del post que entra como parámetro de entrada
+            $postid = shortcode_atts( array(
+                    'id' => 0, // Valor que va a tener por defecto... es decir, si no especificamos atributo en la invocación
+                ), $atts
+            );
+            $post_id = $postid['id'];
+            ?>
+            <div class="custom-fields">
+                <div class="line-1">
+                    <div class="num-pistas">
+                        <div>Núm. Pistas:</div>
+                        <div><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
+                    </div>
+                    <div class="total-kms">
+                        <div>Total KMs:</div>
+                        <div><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
+                    </div>
+                    <div class="total-remontes">
+                        <div>Total remontes:</div>
+                        <div><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
+                    </div>
+                    <div class="rating">
+                        <div>Rating:</div>
+                        <div><?php echo get_post_meta($post_id, 'mpm_rating', true)?></div>
+                    </div>
+                </div>
+            </div>
+            <?php
         }
     }
     
