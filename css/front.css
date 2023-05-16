@@ -1,3 +1,130 @@
 .custom-fields {
-    border: 2px solid red;
+    border: 1px solid red;
+    padding: 5px 20px;
+    position: relative;
+}
+
+.custom-fields::before {
+    content: "\f11d";
+    font-family: dashicons;
+    position: absolute;
+    font-size: 4rem;
+    color: red;
+    left: 47%;
+    top: -25px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    padding-left: 3px;
+    text-align: center;
+    line-height: 50px;
+}
+
+.line-1 {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.line-1 * {
+    text-align: center;
+}
+
+.data {
+    font-weight: 600;
+}
+
+.custom-fields-2 {
+    border: 1px solid red;
+    padding: 5px 20px;
+    position: relative;
+    margin-top: 50px;
+}
+
+.custom-fields-2::before {
+    content: "\f211";
+    font-family: dashicons;
+    position: absolute;
+    font-size: 4rem;
+    color: red;
+    left: 47%;
+    top: -25px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    padding-left: 3px;
+    text-align: center;
+    line-height: 50px;
+}
+
+.numpistas {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(181,181,181,.3);
+    margin-top: 30px;
+}
+
+.banderas {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+}
+
+.banderas * {
+    text-align: center;
+}
+
+.negras span {
+    color: black;
+}
+
+.rojas span {
+    color: red;
+}
+
+.azules span {
+    color: blue;
+}
+
+.verdes span {
+    color: green;
+}
+
+.custom-fields-3 {
+    border: 1px solid red;
+    padding: 5px 20px;
+    position: relative;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.custom-fields-3::before {
+    content: "\f18e";
+    font-family: dashicons;
+    position: absolute;
+    font-size: 4rem;
+    color: red;
+    left: 47%;
+    top: -25px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    padding-left: 3px;
+    text-align: center;
+    line-height: 50px;
+}
+
+.line-3 {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.line-3 * {
+    text-align: center;
 }

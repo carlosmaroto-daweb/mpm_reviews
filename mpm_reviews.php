@@ -39,6 +39,18 @@
             // Guardar el contenido de los custom-post-fields en la BBDD
             add_action('save_post', array($this, 'mpm_save_custom_fields'));
             
+            // Incorporar nuestro custom post type a las consultas por defecto de WP
+            add_action('pre_get_posts', array($this, 'mpm_pre_get_posts'));
+            
+            // Añadir una página de settings a nuestro plugin en el admin-area
+            add_action('admin_menu', array($this, 'mpm_reviews_admin_page'));
+            
+            // Registrar los settings de nuestra pagina de settings
+            add_action('admin_init', array($this, 'mpm_reviews_settings_resgister'));
+            
+            // Activar el lanzamiento de errores en los settings
+            add_action('admin_notices', array($this, 'mpm_reviews_settings_admin_notices'));
+            
             // Añadir hojas de estilo y JS al back-end de nuestro plugin
             add_action('admin_enqueue_scripts', array($this, 'mpm_admin_enqueue_scripts'));
             
@@ -86,6 +98,7 @@
                 'has_archive'   => true,                            // El CPT apareceran en nuestro archive.php y search.php
                 'menu_icon'     => 'dashicons-smiley',              // Clase css para que aparezca el icono asociado a la opción del menú
                 'rewrite'       => array('slug' => 'mpm-reviews'),  // El slug de mi CPT
+                'has_archive'   => true,                            // Nuestros custom-posts apareceran en nuestro archive.php
             );
             register_post_type('mpm_reviews', $args);
             
@@ -246,6 +259,73 @@
         }
         
         /**
+         *  Función que incorpora nuestro custom post type a las consultas por defecto de WP
+         */
+        function mpm_pre_get_posts($query){
+            // Le indicamos a WP que cuando haga la consulta en la plantilla archive.php tenga en cuenta nuestro CPT
+            if(is_archive()) {
+                if($query->is_main_query()){
+                   $query->set('post_type', array('post', 'mpm_reviews')); 
+                }
+            }
+        }
+        
+        /**
+         *  Función que agrega una nueva opción en el menú del admin area asociada a una página de settings
+         */
+        function mpm_reviews_admin_page() {
+            add_menu_page('PhotoTour Reviews Settings', 'Reviews Settings', 'manage_options', 'reviews-settings', array($this, 'mpm_reviews_settings'), 'dashicons-admin-generic', 6);
+        }
+        
+        /**
+         *  Función que dibuja los settings en la página de settings usando HTML y PHP
+         */
+        function mpm_reviews_settings() {
+            require_once(plugin_dir_path(__FILE__).'admin/settings.php');
+        }
+        
+        /**
+         *  Función que registra los settings de la página de settings
+         */
+        function mpm_reviews_settings_resgister() {
+            // register_setting() registra los settings en la tabla wp_options de la BBDD
+            //              <nombre_del_setting>, <sección del setting>, <callback validación de lo settings>
+            register_setting('reviews_settings', 'reviews_settings', array($this, 'mpm_reviews_settings_validation'));
+        }
+        
+        /**
+         *  Función que crea valida los settings del plugin
+         *  @param settings Array Contiene los valores de los settings
+         */
+        function mpm_reviews_settings_validation($settings) {
+            // Si no hemos introducido un color todavía se le aplica el color por defecto
+            if(!isset($settings['mpm_color'])) {
+                $settings['mpm_color'] = '#fcb941'; // --main-color
+            }
+            
+            // Si no tenemos num_tuplas por defecto serán 10 (o si se introduce un número no válido de tuplas)
+            if (!isset($settings['mpm_num_tuplas']) || $settings['mpm_num_tuplas'] < 5 || $settings['mpm_num_tuplas'] > 50){
+                $settings['mpm_num_tuplas'] = 10;
+                // 1. Slug del error
+                // 2. Identificador del error
+                // 3. Mensaje de error
+                // 4. Tipo de error ('error', 'warning', 'succes', 'info')
+                add_settings_error('mpm-reviews-settings', 'mpm_num_tuplas_error', 'Please enter a valid number of tuplas per page (5 to 50)', 'error');
+            }
+            
+            // Si no hemos especificao si queremos rating por defecto es YES
+            if(!isset($settings['mpm_allowrating'])) {
+                $settings['mpm_allowrating'] = "yes";
+            }
+            
+            return $settings;
+        }
+        
+        function mpm_reviews_settings_admin_notices() {
+            settings_errors();
+        }
+        
+        /**
          * Función que añade JS y hojas de estilo al admin área de mi CPT
          */
         function mpm_admin_enqueue_scripts() {
@@ -279,19 +359,91 @@
                 <div class="line-1">
                     <div class="num-pistas">
                         <div>Núm. Pistas:</div>
-                        <div><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
                     </div>
                     <div class="total-kms">
                         <div>Total KMs:</div>
-                        <div><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
                     </div>
                     <div class="total-remontes">
                         <div>Total remontes:</div>
-                        <div><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
                     </div>
                     <div class="rating">
                         <div>Rating:</div>
-                        <div><?php echo get_post_meta($post_id, 'mpm_rating', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_rating', true)?></div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        
+        /**
+         *  Función visualiza los custom-fields del custom-post type mediante shortcode
+         *  @atts array Post ID
+         */
+        function mpm_show_fields_shortcode($atts) {
+            // Recuperamos el ID del post que entra como parámetro de entrada
+            $postid = shortcode_atts( array(
+                    'id' => 0, // Valor que va a tener por defecto... es decir, si no especificamos atributo en la invocación
+                ), $atts
+            );
+            $post_id = $postid['id'];
+            ?>
+            <div class="custom-fields">
+                <div class="line-1">
+                    <div class="num-pistas">
+                        <div>Núm. Pistas:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
+                    </div>
+                    <div class="total-kms">
+                        <div>Total KMs:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
+                    </div>
+                    <div class="total-remontes">
+                        <div>Total remontes:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
+                    </div>
+                    <div class="rating">
+                        <div>Rating:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_rating', true)?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-fields-2">
+                <label class="numpistas">Número de pistas:</label>
+                <div class="custom-field banderas">
+                    <div class="negras">
+                        <span class="dashicons dashicons-flag"></span>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_negras', true)?></div>
+                    </div>
+                    <div class="rojas">
+                        <span class="dashicons dashicons-flag"></span>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_rojas', true)?></div>
+                    </div>
+                    <div class="azules">
+                        <span class="dashicons dashicons-flag"></span>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_azules', true)?></div>
+                    </div>
+                    <div class="verdes">
+                        <span class="dashicons dashicons-flag"></span>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_verdes', true)?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-fields-3">
+                <div class="line-3">
+                    <div class="parking">
+                        <div>Parking:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_parking', true)?></div>
+                    </div>
+                    <div class="tarifa">
+                        <div>Tarifa:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_tarifa', true)?></div>
+                    </div>
+                    <div class="anio">
+                        <div>Año:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_anio', true)?></div>
                     </div>
                 </div>
             </div>

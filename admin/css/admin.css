@@ -14,7 +14,7 @@
 
 .generic h4, .horario h4 {
     width: 100%;
-    background-color: rgba(216, 216, 216, 0.541);
+    background-color: rgba(181,181,181,.3);
     text-align: center;
     text-transform: uppercase;
     color: var(--main-color);
