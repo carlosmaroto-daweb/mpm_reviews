@@ -46,16 +46,17 @@
             add_action('admin_menu', array($this, 'mpm_reviews_admin_page'));
             
             // Registrar los settings de nuestra pagina de settings
-            add_action('admin_init', array($this, 'mpm_reviews_settings_resgister'));
+            add_action('admin_init', array($this, 'mpm_reviews_settings_register'));
             
             // Activar el lanzamiento de errores en los settings
             add_action('admin_notices', array($this, 'mpm_reviews_settings_admin_notices'));
             
-            // Añadir hojas de estilo y JS al back-end de nuestro plugin
-            add_action('admin_enqueue_scripts', array($this, 'mpm_admin_enqueue_scripts'));
-            
             // Añadir hojas de estilo y JS al front-end de nuestro plugin
             add_action('wp_enqueue_scripts', array($this, 'mpm_front_enqueue_scripts'));
+            add_action('wp_enqueue_scripts', array($this, 'mpm_reviews_css_injection'));
+            
+            // Añadir hojas de estilo y JS al back-end de nuestro plugin
+            add_action('admin_enqueue_scripts', array($this, 'mpm_admin_enqueue_scripts'));
         }
         
         /**
@@ -287,7 +288,7 @@
         /**
          *  Función que registra los settings de la página de settings
          */
-        function mpm_reviews_settings_resgister() {
+        function mpm_reviews_settings_register() {
             // register_setting() registra los settings en la tabla wp_options de la BBDD
             //              <nombre_del_setting>, <sección del setting>, <callback validación de lo settings>
             register_setting('reviews_settings', 'reviews_settings', array($this, 'mpm_reviews_settings_validation'));
@@ -313,7 +314,7 @@
                 add_settings_error('mpm-reviews-settings', 'mpm_num_tuplas_error', 'Please enter a valid number of tuplas per page (5 to 50)', 'error');
             }
             
-            // Si no hemos especificao si queremos rating por defecto es YES
+            // Si no hemos especificado si queremos rating por defecto es YES
             if(!isset($settings['mpm_allowrating'])) {
                 $settings['mpm_allowrating'] = "yes";
             }
@@ -326,19 +327,165 @@
         }
         
         /**
-         * Función que añade JS y hojas de estilo al admin área de mi CPT
-         */
-        function mpm_admin_enqueue_scripts() {
-            wp_register_style('mpm_admin_styles', plugins_url('/admin/css/admin.css', __FILE__));
-            wp_enqueue_style('mpm_admin_styles');
-        }
-        
-        /**
          * Función que añade JS y hojas de estilo al front-end de mi CPT
          */
         function mpm_front_enqueue_scripts() {
             wp_register_style('mpm_front_styles', plugins_url('/css/front.css', __FILE__));
             wp_enqueue_style('mpm_front_styles');
+        }
+
+        function mpm_reviews_css_injection() {
+            // Los estilos inyectados para poder aplicar los settings no pueden ir en el constructor
+            // de la clase porque se mandarían antes de terminar el diálogo entre el cliente y servidor
+            // y eso daría un error (en la biblioteca de medios y en la actualización de los posts)
+            
+            // Recogemos las opciones de los settings
+            $options = get_option('reviews_settings');
+            $color = $options['mpm_color'];
+            
+            $style_injection = '
+                .custom-fields {
+                    border: 1px solid' . $color . ';
+                    padding: 5px 20px;
+                    position: relative;
+                }
+                
+                .custom-fields::before {
+                    content: "\f11d";
+                    font-family: dashicons;
+                    position: absolute;
+                    font-size: 4rem;
+                    color: ' . $color . ';
+                    left: 47%;
+                    top: -25px;
+                    width: 50px;
+                    height: 50px;
+                    background-color: white;
+                    padding-left: 3px;
+                    text-align: center;
+                    line-height: 50px;
+                }
+                
+                .line-1 {
+                    display: flex;
+                    justify-content: space-between;
+                    align-content: center;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+                
+                .line-1 * {
+                    text-align: center;
+                }
+                
+                .data {
+                    font-weight: 600;
+                }
+                
+                .custom-fields-2 {
+                    border: 1px solid ' . $color . ';
+                    padding: 5px 20px;
+                    position: relative;
+                    margin-top: 50px;
+                }
+                
+                .custom-fields-2::before {
+                    content: "\f211";
+                    font-family: dashicons;
+                    position: absolute;
+                    font-size: 4rem;
+                    color: ' . $color . ';
+                    left: 47%;
+                    top: -25px;
+                    width: 50px;
+                    height: 50px;
+                    background-color: white;
+                    padding-left: 3px;
+                    text-align: center;
+                    line-height: 50px;
+                }
+                
+                .numpistas {
+                    width: 100%;
+                    text-align: center;
+                    background-color: rgba(181,181,181,.3);
+                    margin-top: 30px;
+                }
+                
+                .banderas {
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-content: center;
+                    align-items: center;
+                }
+                
+                .banderas * {
+                    text-align: center;
+                }
+                
+                .negras span {
+                    color: black;
+                }
+                
+                .rojas span {
+                    color: red;
+                }
+                
+                .azules span {
+                    color: blue;
+                }
+                
+                .verdes span {
+                    color: green;
+                }
+                
+                .custom-fields-3 {
+                    border: 1px solid ' . $color . ';
+                    padding: 5px 20px;
+                    position: relative;
+                    margin-top: 50px;
+                    margin-bottom: 50px;
+                }
+                
+                .custom-fields-3::before {
+                    content: "\f18e";
+                    font-family: dashicons;
+                    position: absolute;
+                    font-size: 4rem;
+                    color: ' . $color . ';
+                    left: 47%;
+                    top: -25px;
+                    width: 50px;
+                    height: 50px;
+                    background-color: white;
+                    padding-left: 3px;
+                    text-align: center;
+                    line-height: 50px;
+                }
+                
+                .line-3 {
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-content: center;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+                
+                .line-3 * {
+                    text-align: center;
+                }
+            ';
+            
+            // Hacemos la inyección de estilos
+            wp_add_inline_style('mpm_front_styles', $style_injection);
+        }
+        
+        /**
+         * Función que añade JS y hojas de estilo al admin área de mi CPT
+         */
+        function mpm_admin_enqueue_scripts() {
+            wp_register_style('mpm_admin_styles', plugins_url('/admin/css/admin.css', __FILE__));
+            wp_enqueue_style('mpm_admin_styles');
         }
         
         /***************************************** SHORTCODES *************************************/
