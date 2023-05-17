@@ -92,14 +92,14 @@
                 // Parametros individuales
                 'public'        => true,                            // Hacemos visible nuestro CPT tanto para el admin area y el front-end
                 'wp_query'      => true,                            // Nuestro CPT será accesible mediante la clase WP_Query()
+                'query_var'     => true,                            // Las variables de la query accesibles a través de la función query_var
                 'show_in_menu'  => true,                            // Queremos que aparezca una opción en el menu del admin area para manejar nuestro CPT
                 'menu_position' => 5,                               // Posición de la opción del CPT en el menu del admin area
                 'hierarchical'  => false,                           // No tendremos post derivados de nuestro CPT
                 'show_in_rest'  => true,                            // TRUE-> Editor Gutemberg, FALSE-> Editor tradicional de WP
-                'has_archive'   => true,                            // El CPT apareceran en nuestro archive.php y search.php
                 'menu_icon'     => 'dashicons-smiley',              // Clase css para que aparezca el icono asociado a la opción del menú
                 'rewrite'       => array('slug' => 'mpm-reviews'),  // El slug de mi CPT
-                'has_archive'   => true,                            // Nuestros custom-posts apareceran en nuestro archive.php
+                'has_archive'   => true,                            // El CPT apareceran en nuestro archive.php y search.php
             );
             register_post_type('mpm_reviews', $args);
             
@@ -264,10 +264,9 @@
          */
         function mpm_pre_get_posts($query){
             // Le indicamos a WP que cuando haga la consulta en la plantilla archive.php tenga en cuenta nuestro CPT
-            if(is_archive()) {
-                if($query->is_main_query()){
-                   $query->set('post_type', array('post', 'mpm_reviews')); 
-                }
+            if(!is_admin() && is_archive() && $query->is_main_query()) {
+                // Tenemos que establecer el argumento post_type
+                $query->set('post_type', array('post', 'mpm_reviews'));  // En tiempo de ejecución
             }
         }
         
@@ -333,151 +332,36 @@
             wp_register_style('mpm_front_styles', plugins_url('/css/front.css', __FILE__));
             wp_enqueue_style('mpm_front_styles');
         }
-
+        
+        /**
+         * Función que inyecta css al front end con valores procedentes de los settings del plugin
+         */
         function mpm_reviews_css_injection() {
             // Los estilos inyectados para poder aplicar los settings no pueden ir en el constructor
             // de la clase porque se mandarían antes de terminar el diálogo entre el cliente y servidor
             // y eso daría un error (en la biblioteca de medios y en la actualización de los posts)
             
             // Recogemos las opciones de los settings
-            $options = get_option('reviews_settings');
+            $options = get_option('reviews_settings'); // Obtenemos el array con todos los settings
             $color = $options['mpm_color'];
             
-            $style_injection = '
-                .custom-fields {
-                    border: 1px solid' . $color . ';
-                    padding: 5px 20px;
-                    position: relative;
+            // Guardamos en una variable todos los estilos que queremos inyectar
+            $styles = '
+                .custom-fields, .custom-fields-2, .custom-fields-3 {
+                    border: 1px solid '.$color.' !important;
                 }
                 
-                .custom-fields::before {
-                    content: "\f11d";
-                    font-family: dashicons;
-                    position: absolute;
-                    font-size: 4rem;
-                    color: ' . $color . ';
-                    left: 47%;
-                    top: -25px;
-                    width: 50px;
-                    height: 50px;
-                    background-color: white;
-                    padding-left: 3px;
-                    text-align: center;
-                    line-height: 50px;
-                }
-                
-                .line-1 {
-                    display: flex;
-                    justify-content: space-between;
-                    align-content: center;
-                    align-items: center;
-                    margin-top: 20px;
-                }
-                
-                .line-1 * {
-                    text-align: center;
-                }
-                
-                .data {
-                    font-weight: 600;
-                }
-                
-                .custom-fields-2 {
-                    border: 1px solid ' . $color . ';
-                    padding: 5px 20px;
-                    position: relative;
-                    margin-top: 50px;
-                }
-                
-                .custom-fields-2::before {
-                    content: "\f211";
-                    font-family: dashicons;
-                    position: absolute;
-                    font-size: 4rem;
-                    color: ' . $color . ';
-                    left: 47%;
-                    top: -25px;
-                    width: 50px;
-                    height: 50px;
-                    background-color: white;
-                    padding-left: 3px;
-                    text-align: center;
-                    line-height: 50px;
-                }
-                
-                .percentages-title {
-                    width: 100%;
-                    text-align: center;
-                    background-color: rgba(181,181,181,.3);
-                    margin-top: 30px;
-                }
-                
-                .percentages {
-                    display: flex;
-                    justify-content: space-evenly;
-                    align-content: center;
-                    align-items: center;
-                }
-                
-                .percentages * {
-                    text-align: center;
-                }
-                
-                .photography_level span {
-                    color: black;
-                }
-                
-                .natural_landscape span {
-                    color: red;
-                }
-                
-                .seascape span {
-                    color: blue;
-                }
-                
-                .verdes span {
-                    color: green;
-                }
-                
-                .custom-fields-3 {
-                    border: 1px solid ' . $color . ';
-                    padding: 5px 20px;
-                    position: relative;
-                    margin-top: 50px;
-                    margin-bottom: 50px;
-                }
-                
-                .custom-fields-3::before {
-                    content: "\f18e";
-                    font-family: dashicons;
-                    position: absolute;
-                    font-size: 4rem;
-                    color: ' . $color . ';
-                    left: 47%;
-                    top: -25px;
-                    width: 50px;
-                    height: 50px;
-                    background-color: white;
-                    padding-left: 3px;
-                    text-align: center;
-                    line-height: 50px;
-                }
-                
-                .line-3 {
-                    display: flex;
-                    justify-content: space-evenly;
-                    align-content: center;
-                    align-items: center;
-                    margin-top: 20px;
-                }
-                
-                .line-3 * {
-                    text-align: center;
+                .custom-fields::before, .custom-fields-2::before, .custom-fields-3::before {
+                    color: '.$color.' !important;
                 }
             ';
             
+            // Registramos y ponemos en la cola la inyección de código
+            wp_register_style('mpm_css_injection', false);
+            wp_enqueue_style('mpm_css_injection');
+            
             // Hacemos la inyección de estilos
-            wp_add_inline_style('mpm_front_styles', $style_injection);
+            wp_add_inline_style('mpm_css_injection', $styles);
         }
         
         /**

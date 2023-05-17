@@ -1,5 +1,5 @@
 .custom-fields {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     padding: 5px 20px;
     position: relative;
 }
@@ -9,7 +9,7 @@
     font-family: dashicons;
     position: absolute;
     font-size: 4rem;
-    color: red;
+    /*color: red;*/
     left: 47%;
     top: -25px;
     width: 50px;
@@ -37,7 +37,7 @@
 }
 
 .custom-fields-2 {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     padding: 5px 20px;
     position: relative;
     margin-top: 50px;
@@ -48,7 +48,7 @@
     font-family: dashicons;
     position: absolute;
     font-size: 4rem;
-    color: red;
+    /*color: red;*/
     left: 47%;
     top: -25px;
     width: 50px;
@@ -94,7 +94,7 @@
 }
 
 .custom-fields-3 {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     padding: 5px 20px;
     position: relative;
     margin-top: 50px;
@@ -106,7 +106,7 @@
     font-family: dashicons;
     position: absolute;
     font-size: 4rem;
-    color: red;
+    /*color: red;*/
     left: 47%;
     top: -25px;
     width: 50px;
