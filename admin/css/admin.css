@@ -37,11 +37,11 @@
     width: 65%;
 }
 
-.banderas {
+.percentages {
     display: flex;
 }
 
-.banderas * {
+.percentages * {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,26 +49,26 @@
     align-items: center;
 }
 
-.numpistas {
+.percentages-title {
     display: inline-block;
     margin: 15px 0;
 }
 
-.negras span, .rojas span, .azules span, .verdes span {
+.photography_level span, .natural_landscape span, .seascape span, .verdes span {
     display: inline-block;
     margin: 10px 0;
     font-size: 2rem;
 }
 
-.negras span {
+.photography_level span {
     color: black;
 }
 
-.rojas span {
+.natural_landscape span {
     color: red;
 }
 
-.azules span {
+.seascape span {
     color: blue;
 }
 

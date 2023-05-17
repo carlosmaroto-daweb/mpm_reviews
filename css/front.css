@@ -59,33 +59,33 @@
     line-height: 50px;
 }
 
-.numpistas {
+.percentages-title {
     width: 100%;
     text-align: center;
     background-color: rgba(181,181,181,.3);
     margin-top: 30px;
 }
 
-.banderas {
+.percentages {
     display: flex;
     justify-content: space-evenly;
     align-content: center;
     align-items: center;
 }
 
-.banderas * {
+.percentages * {
     text-align: center;
 }
 
-.negras span {
+.photography_level span {
     color: black;
 }
 
-.rojas span {
+.natural_landscape span {
     color: red;
 }
 
-.azules span {
+.seascape span {
     color: blue;
 }
 

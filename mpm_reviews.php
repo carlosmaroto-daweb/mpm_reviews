@@ -133,12 +133,12 @@
             wp_nonce_field(basename(__FILE__), 'mpm_review_nonce');
             
             // Data harvesting
-            $numpistas      = get_post_meta($review->ID, 'mpm_numpistas', true);
-            $totalkms       = get_post_meta($review->ID, 'mpm_totalkms', true);
-            $totalremontes  = get_post_meta($review->ID, 'mpm_totalremontes', true);
-            $negras         = get_post_meta($review->ID, 'mpm_negras', true);
-            $rojas          = get_post_meta($review->ID, 'mpm_rojas', true);
-            $azules         = get_post_meta($review->ID, 'mpm_azules', true);
+            $from              = get_post_meta($review->ID, 'mpm_from', true);
+            $to                = get_post_meta($review->ID, 'mpm_to', true);
+            $days              = get_post_meta($review->ID, 'mpm_days', true);
+            $photography_level = get_post_meta($review->ID, 'mpm_photography_level', true);
+            $natural_landscape = get_post_meta($review->ID, 'mpm_natural_landscape', true);
+            $seascape          = get_post_meta($review->ID, 'mpm_seascape', true);
             $verdes         = get_post_meta($review->ID, 'mpm_verdes', true);
             $parking        = get_post_meta($review->ID, 'mpm_parking', true);
             $tarifa         = get_post_meta($review->ID, 'mpm_tarifa', true);
@@ -153,30 +153,30 @@
                     <div class="generic">
                         <h4>Generic Data</h4>
                         <div class="custom-field">
-                            <label for="numpistas">Número de Pistas:</label>
-                            <input type="text" id="numpistas" name="mpm_numpistas" value="<?php echo $numpistas;?>"/>
+                            <label for="from">From:</label>
+                            <input type="text" id="from" name="mpm_from" value="<?php echo $from;?>"/>
                         </div>
                         <div class="custom-field">
-                            <label for="totalkms">Total KMs esquiables:</label>
-                            <input type="text" id="totalkms" name="mpm_totalkms" value="<?php echo $totalkms;?>"/>
+                            <label for="to">To:</label>
+                            <input type="text" id="to" name="mpm_to" value="<?php echo $to;?>"/>
                         </div>
                         <div class="custom-field">
-                            <label for="totalremontes">Total remontes:</label>
-                            <input type="text" id="totalremontes" name="mpm_totalremontes" value="<?php echo $totalremontes;?>"/>
+                            <label for="days">Days:</label>
+                            <input type="text" id="days" name="mpm_days" value="<?php echo $days;?>"/>
                         </div>
-                        <label class="numpistas">Número de pistas:</label>
-                        <div class="custom-field banderas">
-                            <div class="negras">
+                        <label class="percentages-title">What to expect?:</label>
+                        <div class="custom-field percentages">
+                            <div class="photography_level">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="negras" name="mpm_negras" value="<?php echo $negras;?>"/>
+                                <input type="text" id="photography_level" name="mpm_photography_level" value="<?php echo $photography_level;?>"/>
                             </div>
-                            <div class="rojas">
+                            <div class="natural_landscape">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="rojas" name="mpm_rojas" value="<?php echo $rojas;?>"/>
+                                <input type="text" id="natural_landscape" name="mpm_natural_landscape" value="<?php echo $natural_landscape;?>"/>
                             </div>
-                            <div class="azules">
+                            <div class="seascape">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="azules" name="mpm_azules" value="<?php echo $azules;?>"/>
+                                <input type="text" id="seascape" name="mpm_seascape" value="<?php echo $seascape;?>"/>
                             </div>
                             <div class="verdes">
                                 <span class="dashicons dashicons-flag"></span>
@@ -228,12 +228,12 @@
                 return;
             }
             // Guardamos los campos en la BBDD
-            $numpistas     = sanitize_text_field($_POST['mpm_numpistas']);
-            $totalkms      = sanitize_text_field($_POST['mpm_totalkms']);
-            $totalremontes = sanitize_text_field($_POST['mpm_totalremontes']);
-            $negras        = sanitize_text_field($_POST['mpm_negras']);
-            $rojas         = sanitize_text_field($_POST['mpm_rojas']);
-            $azules        = sanitize_text_field($_POST['mpm_azules']);
+            $from              = sanitize_text_field($_POST['mpm_from']);
+            $to                = sanitize_text_field($_POST['mpm_to']);
+            $days              = sanitize_text_field($_POST['mpm_days']);
+            $photography_level = sanitize_text_field($_POST['mpm_photography_level']);
+            $natural_landscape = sanitize_text_field($_POST['mpm_natural_landscape']);
+            $seascape          = sanitize_text_field($_POST['mpm_seascape']);
             $verdes        = sanitize_text_field($_POST['mpm_verdes']);
             
             if(isset($_POST['mpm_parking'])) {
@@ -246,12 +246,12 @@
             $anio   = sanitize_text_field($_POST['mpm_anio']);
             $rating = sanitize_text_field($_POST['mpm_rating']);
             
-            update_post_meta($post_id, 'mpm_numpistas',     $numpistas);
-            update_post_meta($post_id, 'mpm_totalkms',      $totalkms);
-            update_post_meta($post_id, 'mpm_totalremontes', $totalremontes);
-            update_post_meta($post_id, 'mpm_negras',        $negras);
-            update_post_meta($post_id, 'mpm_rojas',         $rojas);
-            update_post_meta($post_id, 'mpm_azules',        $azules);
+            update_post_meta($post_id, 'mpm_from',              $from);
+            update_post_meta($post_id, 'mpm_to',                $to);
+            update_post_meta($post_id, 'mpm_days',              $days);
+            update_post_meta($post_id, 'mpm_photography_level', $photography_level);
+            update_post_meta($post_id, 'mpm_natural_landscape', $natural_landscape);
+            update_post_meta($post_id, 'mpm_seascape',          $seascape);
             update_post_meta($post_id, 'mpm_verdes',        $verdes);
             update_post_meta($post_id, 'mpm_parking',       $parking);
             update_post_meta($post_id, 'mpm_tarifa',        $tarifa);
@@ -405,33 +405,33 @@
                     line-height: 50px;
                 }
                 
-                .numpistas {
+                .percentages-title {
                     width: 100%;
                     text-align: center;
                     background-color: rgba(181,181,181,.3);
                     margin-top: 30px;
                 }
                 
-                .banderas {
+                .percentages {
                     display: flex;
                     justify-content: space-evenly;
                     align-content: center;
                     align-items: center;
                 }
                 
-                .banderas * {
+                .percentages * {
                     text-align: center;
                 }
                 
-                .negras span {
+                .photography_level span {
                     color: black;
                 }
                 
-                .rojas span {
+                .natural_landscape span {
                     color: red;
                 }
                 
-                .azules span {
+                .seascape span {
                     color: blue;
                 }
                 
@@ -504,17 +504,17 @@
             ?>
             <div class="custom-fields">
                 <div class="line-1">
-                    <div class="num-pistas">
-                        <div>Núm. Pistas:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
+                    <div class="from">
+                        <div>From:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_from', true)?></div>
                     </div>
-                    <div class="total-kms">
-                        <div>Total KMs:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
+                    <div class="to">
+                        <div>To:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_to', true)?></div>
                     </div>
-                    <div class="total-remontes">
-                        <div>Total remontes:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
+                    <div class="days">
+                        <div>Days:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_days', true)?></div>
                     </div>
                     <div class="rating">
                         <div>Rating:</div>
@@ -539,17 +539,17 @@
             ?>
             <div class="custom-fields">
                 <div class="line-1">
-                    <div class="num-pistas">
-                        <div>Núm. Pistas:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_numpistas', true)?></div>
+                    <div class="from">
+                        <div>From:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_from', true)?></div>
                     </div>
-                    <div class="total-kms">
-                        <div>Total KMs:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalkms', true)?></div>
+                    <div class="to">
+                        <div>To:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_to', true)?></div>
                     </div>
-                    <div class="total-remontes">
-                        <div>Total remontes:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_totalremontes', true)?></div>
+                    <div class="days">
+                        <div>Days:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_days', true)?></div>
                     </div>
                     <div class="rating">
                         <div>Rating:</div>
@@ -558,19 +558,19 @@
                 </div>
             </div>
             <div class="custom-fields-2">
-                <label class="numpistas">Número de pistas:</label>
-                <div class="custom-field banderas">
-                    <div class="negras">
+                <label class="percentages-title">What to expect?:</label>
+                <div class="custom-field percentages">
+                    <div class="photography_level">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_negras', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_photography_level', true)?></div>
                     </div>
-                    <div class="rojas">
+                    <div class="natural_landscape">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_rojas', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_natural_landscape', true)?></div>
                     </div>
-                    <div class="azules">
+                    <div class="seascape">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_azules', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_seascape', true)?></div>
                     </div>
                     <div class="verdes">
                         <span class="dashicons dashicons-flag"></span>
