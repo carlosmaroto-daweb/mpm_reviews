@@ -12,7 +12,7 @@
     flex: 1 0 49%;
 }
 
-.generic h4, .horario h4 {
+.generic h4, .calendar h4 {
     width: 100%;
     background-color: rgba(181,181,181,.3);
     text-align: center;
@@ -21,7 +21,7 @@
     padding: 10px 0;
 }
 
-.horario {
+.calendar {
     flex: 1 0 49%;
     margin-left: 5px;
 }
@@ -54,7 +54,7 @@
     margin: 15px 0;
 }
 
-.photography_level span, .natural_landscape span, .seascape span, .verdes span {
+.photography_level span, .natural_landscape span, .seascape span, .arquitecture span {
     display: inline-block;
     margin: 10px 0;
     font-size: 2rem;
@@ -72,15 +72,15 @@
     color: blue;
 }
 
-.verdes span {
+.arquitecture span {
     color: green;
 }
 
-#parking {
+#only_adults {
     width: 1rem !important;
     height: 1rem !important;
 }
 
-.parking {
+.only_adults {
     margin-top: 15px;
 }

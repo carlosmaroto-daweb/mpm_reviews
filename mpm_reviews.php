@@ -139,13 +139,13 @@
             $photography_level = get_post_meta($review->ID, 'mpm_photography_level', true);
             $natural_landscape = get_post_meta($review->ID, 'mpm_natural_landscape', true);
             $seascape          = get_post_meta($review->ID, 'mpm_seascape', true);
-            $verdes         = get_post_meta($review->ID, 'mpm_verdes', true);
-            $parking        = get_post_meta($review->ID, 'mpm_parking', true);
-            $tarifa         = get_post_meta($review->ID, 'mpm_tarifa', true);
-            $anio           = get_post_meta($review->ID, 'mpm_anio', true);
-            $rating         = get_post_meta($review->ID, 'mpm_rating', true);
+            $arquitecture      = get_post_meta($review->ID, 'mpm_arquitecture', true);
+            $only_adults       = get_post_meta($review->ID, 'mpm_only_adults', true);
+            $price             = get_post_meta($review->ID, 'mpm_price', true);
+            $max_people        = get_post_meta($review->ID, 'mpm_max_people', true);
+            $rating            = get_post_meta($review->ID, 'mpm_rating', true);
             
-            $horario        = get_post_meta($review->ID, 'mpm_horario', true);
+            $calendar          = get_post_meta($review->ID, 'mpm_calendar', true);
             
             // Dibujamos los custom-post-fielsa xon etiquetas HTML
             ?>
@@ -178,30 +178,30 @@
                                 <span class="dashicons dashicons-flag"></span>
                                 <input type="text" id="seascape" name="mpm_seascape" value="<?php echo $seascape;?>"/>
                             </div>
-                            <div class="verdes">
+                            <div class="arquitecture">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="verdes" name="mpm_verdes" value="<?php echo $verdes;?>"/>
+                                <input type="text" id="arquitecture" name="mpm_arquitecture" value="<?php echo $arquitecture;?>"/>
                             </div>
                         </div>
-                        <div class="custom-field parking">
-                            <label for="parking">Parking:</label>
-                            <input type="checkbox" id="parking" name="mpm_parking" value="SI" <?php if($parking=="SI") echo "checked";?>/>
+                        <div class="custom-field only_adults">
+                            <label for="only_adults">Only adults:</label>
+                            <input type="checkbox" id="only_adults" name="mpm_only_adults" value="SI" <?php if($only_adults=="SI") echo "checked";?>/>
                         </div>
                         <div class="custom-field">
-                            <label for="tarifa">Tarifa:</label>
-                            <input type="text" id="tarifa" name="mpm_tarifa" value="<?php echo $tarifa;?>"/>
+                            <label for="price">Price:</label>
+                            <input type="text" id="price" name="mpm_price" value="<?php echo $price;?>"/>
                         </div>
                         <div class="custom-field">
-                            <label for="anio">Año:</label>
-                            <input type="text" id="anio" name="mpm_anio" value="<?php echo $anio;?>"/>
+                            <label for="max_people">Max people:</label>
+                            <input type="text" id="max_people" name="mpm_max_people" value="<?php echo $max_people;?>"/>
                         </div>
                         <div class="custom-field">
                             <label for="rating">Rating:</label>
                             <input type="text" id="rating" name="mpm_rating" value="<?php echo $rating;?>"/>
                         </div>
                     </div>
-                    <div class="horario">
-                        <h4>Horarios</h4>
+                    <div class="calendar">
+                        <h4>Calendar</h4>
                     </div>
                 </div>
             <?php
@@ -234,17 +234,17 @@
             $photography_level = sanitize_text_field($_POST['mpm_photography_level']);
             $natural_landscape = sanitize_text_field($_POST['mpm_natural_landscape']);
             $seascape          = sanitize_text_field($_POST['mpm_seascape']);
-            $verdes        = sanitize_text_field($_POST['mpm_verdes']);
+            $arquitecture      = sanitize_text_field($_POST['mpm_arquitecture']);
             
-            if(isset($_POST['mpm_parking'])) {
-                $parking = "SI";
+            if(isset($_POST['mpm_only_adults'])) {
+                $only_adults = "SI";
             } else {
-                $parking = "";
+                $only_adults = "";
             }
             
-            $tarifa = sanitize_text_field($_POST['mpm_tarifa']);
-            $anio   = sanitize_text_field($_POST['mpm_anio']);
-            $rating = sanitize_text_field($_POST['mpm_rating']);
+            $price      = sanitize_text_field($_POST['mpm_price']);
+            $max_people = sanitize_text_field($_POST['mpm_max_people']);
+            $rating     = sanitize_text_field($_POST['mpm_rating']);
             
             update_post_meta($post_id, 'mpm_from',              $from);
             update_post_meta($post_id, 'mpm_to',                $to);
@@ -252,11 +252,11 @@
             update_post_meta($post_id, 'mpm_photography_level', $photography_level);
             update_post_meta($post_id, 'mpm_natural_landscape', $natural_landscape);
             update_post_meta($post_id, 'mpm_seascape',          $seascape);
-            update_post_meta($post_id, 'mpm_verdes',        $verdes);
-            update_post_meta($post_id, 'mpm_parking',       $parking);
-            update_post_meta($post_id, 'mpm_tarifa',        $tarifa);
-            update_post_meta($post_id, 'mpm_anio',          $anio);
-            update_post_meta($post_id, 'mpm_rating',        $rating);
+            update_post_meta($post_id, 'mpm_arquitecture',      $arquitecture);
+            update_post_meta($post_id, 'mpm_only_adults',       $only_adults);
+            update_post_meta($post_id, 'mpm_price',             $price);
+            update_post_meta($post_id, 'mpm_max_people',        $max_people);
+            update_post_meta($post_id, 'mpm_rating',            $rating);
         }
         
         /**
@@ -456,25 +456,25 @@
                         <span class="dashicons dashicons-flag"></span>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_seascape', true)?></div>
                     </div>
-                    <div class="verdes">
+                    <div class="arquitecture">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_verdes', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_arquitecture', true)?></div>
                     </div>
                 </div>
             </div>
             <div class="custom-fields-3">
                 <div class="line-3">
-                    <div class="parking">
-                        <div>Parking:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_parking', true)?></div>
+                    <div class="only_adults">
+                        <div>Only adults:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_only_adults', true)?></div>
                     </div>
-                    <div class="tarifa">
-                        <div>Tarifa:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_tarifa', true)?></div>
+                    <div class="price">
+                        <div>Price:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_price', true)?></div>
                     </div>
-                    <div class="anio">
-                        <div>Año:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_anio', true)?></div>
+                    <div class="max_people">
+                        <div>Max people:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_max_people', true)?></div>
                     </div>
                 </div>
             </div>
