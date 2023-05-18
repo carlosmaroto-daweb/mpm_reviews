@@ -37,39 +37,10 @@
     width: 65%;
 }
 
-.percentages {
-    display: flex;
-}
-
-.percentages * {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-}
-
 .percentages-title {
     display: inline-block;
-    margin: 15px 0;
-}
-
-.percentage_1 span, .percentage_2 span, .percentage_3 span {
-    display: inline-block;
-    margin: 10px 0;
-    font-size: 2rem;
-}
-
-.percentage_1 span {
-    color: red;
-}
-
-.percentage_2 span {
-    color: blue;
-}
-
-.percentage_3 span {
-    color: green;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .photography_level {

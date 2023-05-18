@@ -133,21 +133,24 @@
             wp_nonce_field(basename(__FILE__), 'mpm_review_nonce');
             
             // Data harvesting
-            $from              = get_post_meta($review->ID, 'mpm_from', true);
-            $to                = get_post_meta($review->ID, 'mpm_to', true);
-            $days              = get_post_meta($review->ID, 'mpm_days', true);
-            $rating            = get_post_meta($review->ID, 'mpm_rating', true);
+            $from               = get_post_meta($review->ID, 'mpm_from', true);
+            $to                 = get_post_meta($review->ID, 'mpm_to', true);
+            $days               = get_post_meta($review->ID, 'mpm_days', true);
+            $rating             = get_post_meta($review->ID, 'mpm_rating', true);
 
-            $percentage_1      = get_post_meta($review->ID, 'mpm_percentage_1', true);
-            $percentage_2      = get_post_meta($review->ID, 'mpm_percentage_2', true);
-            $percentage_3      = get_post_meta($review->ID, 'mpm_percentage_3', true);
+            $percentage_title_1 = get_post_meta($review->ID, 'mpm_percentage_title_1', true);
+            $percentage_1       = get_post_meta($review->ID, 'mpm_percentage_1', true);
+            $percentage_title_2 = get_post_meta($review->ID, 'mpm_percentage_title_2', true);
+            $percentage_2       = get_post_meta($review->ID, 'mpm_percentage_2', true);
+            $percentage_title_3 = get_post_meta($review->ID, 'mpm_percentage_title_3', true);
+            $percentage_3       = get_post_meta($review->ID, 'mpm_percentage_3', true);
 
-            $photography_level = get_post_meta($review->ID, 'mpm_photography_level', true);
-            $only_adults       = get_post_meta($review->ID, 'mpm_only_adults', true);
-            $price             = get_post_meta($review->ID, 'mpm_price', true);
-            $max_people        = get_post_meta($review->ID, 'mpm_max_people', true);
+            $photography_level  = get_post_meta($review->ID, 'mpm_photography_level', true);
+            $only_adults        = get_post_meta($review->ID, 'mpm_only_adults', true);
+            $price              = get_post_meta($review->ID, 'mpm_price', true);
+            $max_people         = get_post_meta($review->ID, 'mpm_max_people', true);
             
-            $calendar          = get_post_meta($review->ID, 'mpm_calendar', true);
+            $calendar           = get_post_meta($review->ID, 'mpm_calendar', true);
             
             // Dibujamos los custom-post-fielsa xon etiquetas HTML
             ?>
@@ -171,19 +174,21 @@
                             <input type="text" id="rating" name="mpm_rating" value="<?php echo $rating;?>"/>
                         </div>
                         <label class="percentages-title">What to expect?:</label>
-                        <div class="custom-field percentages">
-                            <div class="percentage_1">
-                                <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="percentage_1" name="mpm_percentage_1" value="<?php echo $percentage_1;?>"/>
-                            </div>
-                            <div class="percentage_2">
-                                <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="percentage_2" name="mpm_percentage_2" value="<?php echo $percentage_2;?>"/>
-                            </div>
-                            <div class="percentage_3">
-                                <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="percentage_3" name="mpm_percentage_3" value="<?php echo $percentage_3;?>"/>
-                            </div>
+                        <div class="custom-field">
+                            <label for="percentage_title_1">Title 1:</label>
+                            <input type="text" id="percentage_title_1" name="mpm_percentage_title_1" value="<?php echo $percentage_title_1;?>"/>
+                            <label for="percentage_1">%:</label>
+                            <input type="text" id="percentage_1" name="mpm_percentage_1" value="<?php echo $percentage_1;?>"/>
+                            
+                            <label for="percentage_title_2">Title 2:</label>
+                            <input type="text" id="percentage_title_2" name="mpm_percentage_title_2" value="<?php echo $percentage_title_2;?>"/>
+                            <label for="percentage_2">%:</label>
+                            <input type="text" id="percentage_2" name="mpm_percentage_2" value="<?php echo $percentage_2;?>"/>
+                        
+                            <label for="percentage_title_3">Title 3:</label>
+                            <input type="text" id="percentage_title_3" name="mpm_percentage_title_3" value="<?php echo $percentage_title_3;?>"/>
+                            <label for="percentage_3">%:</label>
+                            <input type="text" id="percentage_3" name="mpm_percentage_3" value="<?php echo $percentage_3;?>"/>
                         </div>
                         <div class="custom-field photography_level">
                             <label for="photography_level">Photography level:</label>
@@ -230,16 +235,19 @@
                 return;
             }
             // Guardamos los campos en la BBDD
-            $from              = sanitize_text_field($_POST['mpm_from']);
-            $to                = sanitize_text_field($_POST['mpm_to']);
-            $days              = sanitize_text_field($_POST['mpm_days']);
-            $rating            = sanitize_text_field($_POST['mpm_rating']);
+            $from               = sanitize_text_field($_POST['mpm_from']);
+            $to                 = sanitize_text_field($_POST['mpm_to']);
+            $days               = sanitize_text_field($_POST['mpm_days']);
+            $rating             = sanitize_text_field($_POST['mpm_rating']);
 
-            $percentage_1      = sanitize_text_field($_POST['mpm_percentage_1']);
-            $percentage_2      = sanitize_text_field($_POST['mpm_percentage_2']);
-            $percentage_3      = sanitize_text_field($_POST['mpm_percentage_3']);
+            $percentage_title_1 = sanitize_text_field($_POST['mpm_percentage_title_1']);
+            $percentage_1       = sanitize_text_field($_POST['mpm_percentage_1']);
+            $percentage_title_2 = sanitize_text_field($_POST['mpm_percentage_title_2']);
+            $percentage_2       = sanitize_text_field($_POST['mpm_percentage_2']);
+            $percentage_title_3 = sanitize_text_field($_POST['mpm_percentage_title_3']);
+            $percentage_3       = sanitize_text_field($_POST['mpm_percentage_3']);
             
-            $photography_level = sanitize_text_field($_POST['mpm_photography_level']);
+            $photography_level  = sanitize_text_field($_POST['mpm_photography_level']);
             if(isset($_POST['mpm_only_adults'])) {
                 $only_adults = "YES";
             } else {
@@ -248,19 +256,22 @@
             $price      = sanitize_text_field($_POST['mpm_price']);
             $max_people = sanitize_text_field($_POST['mpm_max_people']);
             
-            update_post_meta($post_id, 'mpm_from',              $from);
-            update_post_meta($post_id, 'mpm_to',                $to);
-            update_post_meta($post_id, 'mpm_days',              $days);
-            update_post_meta($post_id, 'mpm_rating',            $rating);
+            update_post_meta($post_id, 'mpm_from',               $from);
+            update_post_meta($post_id, 'mpm_to',                 $to);
+            update_post_meta($post_id, 'mpm_days',               $days);
+            update_post_meta($post_id, 'mpm_rating',             $rating);
 
-            update_post_meta($post_id, 'mpm_percentage_1',      $percentage_1);
-            update_post_meta($post_id, 'mpm_percentage_2',      $percentage_2);
-            update_post_meta($post_id, 'mpm_percentage_3',      $percentage_3);
+            update_post_meta($post_id, 'mpm_percentage_1',       $percentage_1);
+            update_post_meta($post_id, 'mpm_percentage_title_1', $percentage_title_1);
+            update_post_meta($post_id, 'mpm_percentage_2',       $percentage_2);
+            update_post_meta($post_id, 'mpm_percentage_title_2', $percentage_title_2);
+            update_post_meta($post_id, 'mpm_percentage_3',       $percentage_3);
+            update_post_meta($post_id, 'mpm_percentage_title_3', $percentage_title_3);
 
-            update_post_meta($post_id, 'mpm_photography_level', $photography_level);
-            update_post_meta($post_id, 'mpm_only_adults',       $only_adults);
-            update_post_meta($post_id, 'mpm_price',             $price);
-            update_post_meta($post_id, 'mpm_max_people',        $max_people);
+            update_post_meta($post_id, 'mpm_photography_level',  $photography_level);
+            update_post_meta($post_id, 'mpm_only_adults',        $only_adults);
+            update_post_meta($post_id, 'mpm_price',              $price);
+            update_post_meta($post_id, 'mpm_max_people',         $max_people);
         }
         
         /**
@@ -449,16 +460,16 @@
                 <label class="percentages-title">What to expect?:</label>
                 <div class="custom-field percentages">
                     <div class="percentage_1">
-                        <span class="dashicons dashicons-flag"></span>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_1', true)?></div>
                     </div>
                     <div class="percentage_2">
-                        <span class="dashicons dashicons-flag"></span>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_2', true)?></div>
                     </div>
                     <div class="percentage_3">
-                        <span class="dashicons dashicons-flag"></span>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_3', true)?></div>
                     </div>
                 </div>
             </div>
