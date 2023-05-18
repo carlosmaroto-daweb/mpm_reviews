@@ -136,14 +136,16 @@
             $from              = get_post_meta($review->ID, 'mpm_from', true);
             $to                = get_post_meta($review->ID, 'mpm_to', true);
             $days              = get_post_meta($review->ID, 'mpm_days', true);
+            $rating            = get_post_meta($review->ID, 'mpm_rating', true);
+
+            $percentage_1      = get_post_meta($review->ID, 'mpm_percentage_1', true);
+            $percentage_2      = get_post_meta($review->ID, 'mpm_percentage_2', true);
+            $percentage_3      = get_post_meta($review->ID, 'mpm_percentage_3', true);
+
             $photography_level = get_post_meta($review->ID, 'mpm_photography_level', true);
-            $natural_landscape = get_post_meta($review->ID, 'mpm_natural_landscape', true);
-            $seascape          = get_post_meta($review->ID, 'mpm_seascape', true);
-            $arquitecture      = get_post_meta($review->ID, 'mpm_arquitecture', true);
             $only_adults       = get_post_meta($review->ID, 'mpm_only_adults', true);
             $price             = get_post_meta($review->ID, 'mpm_price', true);
             $max_people        = get_post_meta($review->ID, 'mpm_max_people', true);
-            $rating            = get_post_meta($review->ID, 'mpm_rating', true);
             
             $calendar          = get_post_meta($review->ID, 'mpm_calendar', true);
             
@@ -164,26 +166,30 @@
                             <label for="days">Days:</label>
                             <input type="text" id="days" name="mpm_days" value="<?php echo $days;?>"/>
                         </div>
+                        <div class="custom-field">
+                            <label for="rating">Rating:</label>
+                            <input type="text" id="rating" name="mpm_rating" value="<?php echo $rating;?>"/>
+                        </div>
                         <label class="percentages-title">What to expect?:</label>
                         <div class="custom-field percentages">
-                            <div class="photography_level">
+                            <div class="percentage_1">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="photography_level" name="mpm_photography_level" value="<?php echo $photography_level;?>"/>
+                                <input type="text" id="percentage_1" name="mpm_percentage_1" value="<?php echo $percentage_1;?>"/>
                             </div>
-                            <div class="natural_landscape">
+                            <div class="percentage_2">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="natural_landscape" name="mpm_natural_landscape" value="<?php echo $natural_landscape;?>"/>
+                                <input type="text" id="percentage_2" name="mpm_percentage_2" value="<?php echo $percentage_2;?>"/>
                             </div>
-                            <div class="seascape">
+                            <div class="percentage_3">
                                 <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="seascape" name="mpm_seascape" value="<?php echo $seascape;?>"/>
-                            </div>
-                            <div class="arquitecture">
-                                <span class="dashicons dashicons-flag"></span>
-                                <input type="text" id="arquitecture" name="mpm_arquitecture" value="<?php echo $arquitecture;?>"/>
+                                <input type="text" id="percentage_3" name="mpm_percentage_3" value="<?php echo $percentage_3;?>"/>
                             </div>
                         </div>
-                        <div class="custom-field only_adults">
+                        <div class="custom-field photography_level">
+                            <label for="photography_level">Photography level:</label>
+                            <input type="text" id="photography_level" name="mpm_photography_level" value="<?php echo $photography_level;?>"/>
+                        </div>
+                        <div class="custom-field">
                             <label for="only_adults">Only adults:</label>
                             <input type="checkbox" id="only_adults" name="mpm_only_adults" value="YES" <?php if($only_adults=="YES") echo "checked";?>/>
                         </div>
@@ -194,10 +200,6 @@
                         <div class="custom-field">
                             <label for="max_people">Max people:</label>
                             <input type="text" id="max_people" name="mpm_max_people" value="<?php echo $max_people;?>"/>
-                        </div>
-                        <div class="custom-field">
-                            <label for="rating">Rating:</label>
-                            <input type="text" id="rating" name="mpm_rating" value="<?php echo $rating;?>"/>
                         </div>
                     </div>
                     <div class="calendar">
@@ -231,32 +233,34 @@
             $from              = sanitize_text_field($_POST['mpm_from']);
             $to                = sanitize_text_field($_POST['mpm_to']);
             $days              = sanitize_text_field($_POST['mpm_days']);
-            $photography_level = sanitize_text_field($_POST['mpm_photography_level']);
-            $natural_landscape = sanitize_text_field($_POST['mpm_natural_landscape']);
-            $seascape          = sanitize_text_field($_POST['mpm_seascape']);
-            $arquitecture      = sanitize_text_field($_POST['mpm_arquitecture']);
+            $rating            = sanitize_text_field($_POST['mpm_rating']);
+
+            $percentage_1      = sanitize_text_field($_POST['mpm_percentage_1']);
+            $percentage_2      = sanitize_text_field($_POST['mpm_percentage_2']);
+            $percentage_3      = sanitize_text_field($_POST['mpm_percentage_3']);
             
+            $photography_level = sanitize_text_field($_POST['mpm_photography_level']);
             if(isset($_POST['mpm_only_adults'])) {
                 $only_adults = "YES";
             } else {
                 $only_adults = "";
             }
-            
             $price      = sanitize_text_field($_POST['mpm_price']);
             $max_people = sanitize_text_field($_POST['mpm_max_people']);
-            $rating     = sanitize_text_field($_POST['mpm_rating']);
             
             update_post_meta($post_id, 'mpm_from',              $from);
             update_post_meta($post_id, 'mpm_to',                $to);
             update_post_meta($post_id, 'mpm_days',              $days);
+            update_post_meta($post_id, 'mpm_rating',            $rating);
+
+            update_post_meta($post_id, 'mpm_percentage_1',      $percentage_1);
+            update_post_meta($post_id, 'mpm_percentage_2',      $percentage_2);
+            update_post_meta($post_id, 'mpm_percentage_3',      $percentage_3);
+
             update_post_meta($post_id, 'mpm_photography_level', $photography_level);
-            update_post_meta($post_id, 'mpm_natural_landscape', $natural_landscape);
-            update_post_meta($post_id, 'mpm_seascape',          $seascape);
-            update_post_meta($post_id, 'mpm_arquitecture',      $arquitecture);
             update_post_meta($post_id, 'mpm_only_adults',       $only_adults);
             update_post_meta($post_id, 'mpm_price',             $price);
             update_post_meta($post_id, 'mpm_max_people',        $max_people);
-            update_post_meta($post_id, 'mpm_rating',            $rating);
         }
         
         /**
@@ -444,26 +448,26 @@
             <div class="custom-fields-2">
                 <label class="percentages-title">What to expect?:</label>
                 <div class="custom-field percentages">
-                    <div class="photography_level">
+                    <div class="percentage_1">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_photography_level', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?></div>
                     </div>
-                    <div class="natural_landscape">
+                    <div class="percentage_2">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_natural_landscape', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?></div>
                     </div>
-                    <div class="seascape">
+                    <div class="percentage_3">
                         <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_seascape', true)?></div>
-                    </div>
-                    <div class="arquitecture">
-                        <span class="dashicons dashicons-flag"></span>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_arquitecture', true)?></div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?></div>
                     </div>
                 </div>
             </div>
             <div class="custom-fields-3">
                 <div class="line-3">
+                    <div class="photography_level">
+                        <div>Photography level:</div>
+                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_photography_level', true)?></div>
+                    </div>
                     <div class="only_adults">
                         <div>Only adults:</div>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_only_adults', true)?></div>

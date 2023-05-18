@@ -77,19 +77,15 @@
     text-align: center;
 }
 
-.photography_level span {
-    color: black;
-}
-
-.natural_landscape span {
+.percentage_1 span {
     color: red;
 }
 
-.seascape span {
+.percentage_2 span {
     color: blue;
 }
 
-.arquitecture span {
+.percentage_3 span {
     color: green;
 }
 
@@ -119,7 +115,7 @@
 
 .line-3 {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-content: center;
     align-items: center;
     margin-top: 20px;

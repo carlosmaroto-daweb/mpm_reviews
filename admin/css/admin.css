@@ -54,33 +54,29 @@
     margin: 15px 0;
 }
 
-.photography_level span, .natural_landscape span, .seascape span, .arquitecture span {
+.percentage_1 span, .percentage_2 span, .percentage_3 span {
     display: inline-block;
     margin: 10px 0;
     font-size: 2rem;
 }
 
-.photography_level span {
-    color: black;
-}
-
-.natural_landscape span {
+.percentage_1 span {
     color: red;
 }
 
-.seascape span {
+.percentage_2 span {
     color: blue;
 }
 
-.arquitecture span {
+.percentage_3 span {
     color: green;
+}
+
+.photography_level {
+    margin-top: 15px;
 }
 
 #only_adults {
     width: 1rem !important;
     height: 1rem !important;
-}
-
-.only_adults {
-    margin-top: 15px;
 }
