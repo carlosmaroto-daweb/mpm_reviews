@@ -185,7 +185,7 @@
                         </div>
                         <div class="custom-field only_adults">
                             <label for="only_adults">Only adults:</label>
-                            <input type="checkbox" id="only_adults" name="mpm_only_adults" value="SI" <?php if($only_adults=="SI") echo "checked";?>/>
+                            <input type="checkbox" id="only_adults" name="mpm_only_adults" value="YES" <?php if($only_adults=="YES") echo "checked";?>/>
                         </div>
                         <div class="custom-field">
                             <label for="price">Price:</label>
@@ -237,7 +237,7 @@
             $arquitecture      = sanitize_text_field($_POST['mpm_arquitecture']);
             
             if(isset($_POST['mpm_only_adults'])) {
-                $only_adults = "SI";
+                $only_adults = "YES";
             } else {
                 $only_adults = "";
             }
