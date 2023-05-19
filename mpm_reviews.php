@@ -152,7 +152,7 @@
             
             $calendar           = get_post_meta($review->ID, 'mpm_calendar', true);
             
-            // Dibujamos los custom-post-fielsa xon etiquetas HTML
+            // Dibujamos los custom-post-fiels con etiquetas HTML
             ?>
                 <div class="flex-container">
                     <div class="generic">
@@ -304,12 +304,12 @@
          */
         function mpm_reviews_settings_register() {
             // register_setting() registra los settings en la tabla wp_options de la BBDD
-            //              <nombre_del_setting>, <sección del setting>, <callback validación de lo settings>
+            //              <nombre_del_setting>, <sección_del_setting>, <callback_validación_de_los_settings>
             register_setting('reviews_settings', 'reviews_settings', array($this, 'mpm_reviews_settings_validation'));
         }
         
         /**
-         *  Función que crea valida los settings del plugin
+         *  Función que valida los settings del plugin
          *  @param settings Array Contiene los valores de los settings
          */
         function mpm_reviews_settings_validation($settings) {
@@ -336,6 +336,9 @@
             return $settings;
         }
         
+        /**
+         *  Función que activa el lanzamiento de errores en los settings
+         */
         function mpm_reviews_settings_admin_notices() {
             settings_errors();
         }
@@ -390,7 +393,7 @@
         /***************************************** SHORTCODES *************************************/
         
         /**
-         *  Función visualiza los custom-fields esenciales del custom-post type mediante shortcode
+         *  Función que visualiza los custom-fields esenciales del custom-post type mediante shortcode
          *  @atts array Post ID
          */
         function mpm_show_main_fields_shortcode($atts) {
@@ -425,7 +428,7 @@
         }
         
         /**
-         *  Función visualiza los custom-fields del custom-post type mediante shortcode
+         *  Función que visualiza los custom-fields del custom-post type mediante shortcode
          *  @atts array Post ID
          */
         function mpm_show_fields_shortcode($atts) {
