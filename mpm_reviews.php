@@ -459,16 +459,16 @@
             <div class="custom-fields-2">
                 <label class="percentages-title">What to expect?:</label>
                 <div class="custom-field percentages">
-                    <div class="percentage_1">
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?></div>
+                    <div>
+                        <div class="percentage_1"><?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?></div>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_1', true)?></div>
                     </div>
-                    <div class="percentage_2">
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?></div>
+                    <div>
+                        <div class="percentage_2"><?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?></div>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_2', true)?></div>
                     </div>
-                    <div class="percentage_3">
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?></div>
+                    <div>
+                        <div class="percentage_3"><?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?></div>
                         <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_3', true)?></div>
                     </div>
                 </div>

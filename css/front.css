@@ -77,15 +77,15 @@
     text-align: center;
 }
 
-.percentage_1 span {
+.percentage_1 {
     color: red;
 }
 
-.percentage_2 span {
+.percentage_2 {
     color: blue;
 }
 
-.percentage_3 span {
+.percentage_3 {
     color: green;
 }
 
