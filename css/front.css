@@ -141,3 +141,14 @@
 .data {
     font-weight: 600;
 }
+
+@media (max-width: 575px) {
+    
+    .line-1, .line-2, .line-3 {
+        flex-direction: column;
+    }
+
+    .custom-fields-1::before, .custom-fields-2::before, .custom-fields-3::before {
+        left: 45%;
+    }
+}
