@@ -362,11 +362,11 @@
             
             // Guardamos en una variable todos los estilos que queremos inyectar
             $styles = '
-                .custom-fields, .custom-fields-2, .custom-fields-3 {
+                .custom-fields-1, .custom-fields-2, .custom-fields-3 {
                     border: 1px solid '.$color.' !important;
                 }
                 
-                .custom-fields::before, .custom-fields-2::before, .custom-fields-3::before {
+                .custom-fields-1::before, .custom-fields-2::before, .custom-fields-3::before {
                     color: '.$color.' !important;
                 }
             ';
@@ -401,7 +401,7 @@
             );
             $post_id = $postid['id'];
             ?>
-            <div class="custom-fields">
+            <div class="custom-fields-1">
                 <div class="line-1">
                     <div class="from">
                         <div>From:</div>
@@ -436,7 +436,7 @@
             );
             $post_id = $postid['id'];
             ?>
-            <div class="custom-fields">
+            <div class="custom-fields-1">
                 <div class="line-1">
                     <div class="from">
                         <div>From:</div>
@@ -470,7 +470,7 @@
             </div>
             <div class="custom-fields-2">
                 <label class="percentages-title">What to expect?:</label>
-                <div class="custom-field percentages">
+                <div class="line-2">
                     <div class="circle-progress circle-progress-bg-pasific" data-value=".<?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?>" data-size="125" data-thickness="5">
                         <span class="circle-progress-value"></span>
                         <span class="circle-progress-title"><?php echo get_post_meta($post_id, 'mpm_percentage_title_1', true)?></span>
