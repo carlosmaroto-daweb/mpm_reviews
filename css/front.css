@@ -36,6 +36,35 @@
     font-weight: 600;
 }
 
+.circle-progress {
+    margin: 6px 6px 20px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.circle-progress-title {
+    color: #747474 !important;
+    font-weight: 600 !important;
+    display: block;
+    margin-top: 20px;
+}
+
+.circle-progress-value {
+    position: absolute;
+    top: 42.5px !important;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 40px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 25px;
+    color: #747474 !important;
+    font-weight: 500 !important;
+}
+
 .custom-fields-2 {
     /*border: 1px solid red;*/
     padding: 5px 20px;

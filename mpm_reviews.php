@@ -471,17 +471,17 @@
             <div class="custom-fields-2">
                 <label class="percentages-title">What to expect?:</label>
                 <div class="custom-field percentages">
-                    <div>
-                        <div class="percentage_1"><?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?></div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_1', true)?></div>
+                    <div class="circle-progress circle-progress-bg-pasific" data-value=".<?php echo get_post_meta($post_id, 'mpm_percentage_1', true)?>" data-size="125" data-thickness="5">
+                        <span class="circle-progress-value"></span>
+                        <span class="circle-progress-title"><?php echo get_post_meta($post_id, 'mpm_percentage_title_1', true)?></span>
                     </div>
-                    <div>
-                        <div class="percentage_2"><?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?></div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_2', true)?></div>
+                    <div class="circle-progress circle-progress-bg-primary" data-value=".<?php echo get_post_meta($post_id, 'mpm_percentage_2', true)?>" data-size="125" data-thickness="5">
+                        <span class="circle-progress-value"></span>
+                        <span class="circle-progress-title"><?php echo get_post_meta($post_id, 'mpm_percentage_title_2', true)?></span>
                     </div>
-                    <div>
-                        <div class="percentage_3"><?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?></div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_percentage_title_3', true)?></div>
+                    <div class="circle-progress circle-progress-bg-success" data-value=".<?php echo get_post_meta($post_id, 'mpm_percentage_3', true)?>" data-size="125" data-thickness="5">
+                        <span class="circle-progress-value"></span>
+                        <span class="circle-progress-title"><?php echo get_post_meta($post_id, 'mpm_percentage_title_3', true)?></span>
                     </div>
                 </div>
             </div>
