@@ -44,7 +44,7 @@
 }
 
 .custom-fields-2::before {
-    content: "\f211";
+    content: "\f306";
     font-family: dashicons;
     position: absolute;
     font-size: 4rem;
@@ -98,7 +98,7 @@
 }
 
 .custom-fields-3::before {
-    content: "\f18e";
+    content: "\f110";
     font-family: dashicons;
     position: absolute;
     font-size: 4rem;
