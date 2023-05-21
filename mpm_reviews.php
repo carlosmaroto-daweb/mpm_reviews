@@ -251,7 +251,7 @@
             if(isset($_POST['mpm_only_adults'])) {
                 $only_adults = "YES";
             } else {
-                $only_adults = "";
+                $only_adults = "NO";
             }
             $price      = sanitize_text_field($_POST['mpm_price']);
             $max_people = sanitize_text_field($_POST['mpm_max_people']);
