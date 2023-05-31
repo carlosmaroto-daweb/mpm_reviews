@@ -16,11 +16,10 @@
             ?>
                         <tr>
                             <td><a class="remove-row" href=""><span class="dashicons dashicons-remove"></span></a></td>  
-                            <td><input type="text" class="" name="days[]" value="<?php if ($field['days'] != '') echo $field['days'];?>"></td>
-                            <td><input type="text" class="" name="places[]" value="<?php if ($field['places'] != '') echo $field['places'];?>"></td>
+                            <td><input type="text" class="" name="days[]" value="<?php echo $field['days'];?>"></td>
+                            <td><input type="text" class="" name="places[]" value="<?php echo $field['places'];?>"></td>
                             <td><a href="">|||</a></td>
                         </tr>
-            
             <?php
                    }
                   // Si no tengo campos creamos una fila en blanco

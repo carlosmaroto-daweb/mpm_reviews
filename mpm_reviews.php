@@ -543,24 +543,23 @@
                 <div class="line-4">
                     <?php
                         $itinerary = get_post_meta($post_id, 'mpm_repeteable_fields', true);
-                        $count = count($itinerary);
                     ?>
                     <div class="col-days">
                         <div class="days-title">Days</div>
                         <?php
-                            for($i=0; $i<$count; $i++) { 
-                                echo '<div class="data">'.$itinerary[$i]['days'].'</div>';
+                            foreach($itinerary as $field) {
+                                echo '<div class="data">'.$field['days'].'</div>';
                             }
                         ?>
                     </div>
                     <div class="col-places">
                         <div class="places-title">Places</div>
                         <?php
-                            for($i=0; $i<$count; $i++) { 
-                                if(empty($itinerary[$i]['places'])) {
-                                    echo '<div class="data">NULL</div>';
+                            foreach($itinerary as $field) {
+                                if($field['places'] != '') {
+                                    echo '<div class="data">'.$field['places'].'</div>';
                                 } else {
-                                    echo '<div class="data">'.$itinerary[$i]['places'].'</div>';
+                                    echo '<div class="data">NULL</div>';
                                 }
                             }
                         ?>
