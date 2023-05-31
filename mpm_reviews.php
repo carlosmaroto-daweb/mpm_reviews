@@ -547,19 +547,23 @@
                     <div class="col-days">
                         <div class="days-title">Days</div>
                         <?php
-                            foreach($itinerary as $field) {
-                                echo '<div class="data">'.$field['days'].'</div>';
+                            if($itinerary) {
+                                foreach($itinerary as $field) {
+                                    echo '<div class="data">'.$field['days'].'</div>';
+                                }
                             }
                         ?>
                     </div>
                     <div class="col-places">
                         <div class="places-title">Places</div>
                         <?php
-                            foreach($itinerary as $field) {
-                                if($field['places'] != '') {
-                                    echo '<div class="data">'.$field['places'].'</div>';
-                                } else {
-                                    echo '<div class="data">NULL</div>';
+                            if($itinerary) {
+                                foreach($itinerary as $field) {
+                                    if($field['places'] != '') {
+                                        echo '<div class="data">'.$field['places'].'</div>';
+                                    } else {
+                                        echo '<div class="data">NULL</div>';
+                                    }
                                 }
                             }
                         ?>
