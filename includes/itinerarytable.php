@@ -45,6 +45,6 @@
         </tbody>
     </table>  
     <p class="add_button">
-        <a id="add-row" class="add-row" href=""><span class="dashicons dashicons-plus-alt"></span> Add time </a>
+        <a id="add-row" class="add-row" href=""><span class="dashicons dashicons-plus-alt"></span> Add itinerary </a>
     </p>
 </div>
