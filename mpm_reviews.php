@@ -150,7 +150,7 @@
             $price              = get_post_meta($review->ID, 'mpm_price', true);
             $max_people         = get_post_meta($review->ID, 'mpm_max_people', true);
             
-            $calendar           = get_post_meta($review->ID, 'mpm_calendar', true);
+            $repeteable_fields  = get_post_meta($review->ID, 'mpm_repeteable_fields', true);
             
             // Dibujamos los custom-post-fiels con etiquetas HTML
             ?>
@@ -207,8 +207,11 @@
                             <input type="text" id="max_people" name="mpm_max_people" value="<?php echo $max_people;?>"/>
                         </div>
                     </div>
-                    <div class="calendar">
-                        <h4>Calendar</h4>
+                    <div class="itinerary">
+                        <h4>Itinerary</h4>
+                        <?php
+                            require_once(plugin_dir_path(__FILE__).'includes/itinerarytable.php');
+                        ?>
                     </div>
                 </div>
             <?php
@@ -272,6 +275,30 @@
             update_post_meta($post_id, 'mpm_only_adults',        $only_adults);
             update_post_meta($post_id, 'mpm_price',              $price);
             update_post_meta($post_id, 'mpm_max_people',         $max_people);
+            
+            // Guardar los campos dinámicos en la BBDD
+            $old = get_post_meta($post_id, 'mpm_repeteable_fields', true);
+            $new = array();
+            
+            // Harvesting
+            $days = $_POST['days'];
+            $places = $_POST['places'];
+            // Intetamos hallar el número de campos
+            $count = count($days);
+            
+            for($i=0; $i<$count; $i++) {  //Recorremos el array de doble dimensión con los campos dinámicos
+                if($days[$i] != '') {
+                    $new[$i]['days'] = stripslashes(strip_tags($days[$i]));
+                    // Si ya hemos metido algo en el primer campo tenemos que respetarlo aunque el segundo esté vacío
+                    $new[$i]['places'] = stripslashes(strip_tags($places[$i]));
+                }
+            }
+            
+            if (!empty($new) && $new!=$old) {
+                update_post_meta($post_id, 'mpm_repeteable_fields', $new);
+            } elseif(empty($new) && $old) {
+                delete_post_meta($post_id, 'mpm_repeteable_fields', $old);
+            }
         }
         
         /**
@@ -365,11 +392,11 @@
             
             // Guardamos en una variable todos los estilos que queremos inyectar
             $styles = '
-                .custom-fields-1, .custom-fields-2, .custom-fields-3 {
+                .custom-fields-1, .custom-fields-2, .custom-fields-3, .custom-fields-4 {
                     border: 1px solid '.$color.' !important;
                 }
                 
-                .custom-fields-1::before, .custom-fields-2::before, .custom-fields-3::before {
+                .custom-fields-1::before, .custom-fields-2::before, .custom-fields-3::before, .custom-fields-4::before {
                     color: '.$color.' !important;
                 }
             ';
@@ -388,6 +415,10 @@
         function mpm_admin_enqueue_scripts() {
             wp_register_style('mpm_admin_styles', plugins_url('/admin/css/admin.css', __FILE__));
             wp_enqueue_style('mpm_admin_styles');
+            
+            // Anexar el JS que añade campos dinámicos a nuestro CPT
+            wp_register_script('mpm_reviews_js', plugins_url('/admin/js/mpm_reviews_js.js', __FILE__));
+            wp_enqueue_script('mpm_reviews_js');
         }
         
         /***************************************** SHORTCODES *************************************/
@@ -508,9 +539,56 @@
                     </div>
                 </div>
             </div>
+            <div class="custom-fields-4">
+                <div class="line-4">
+                    <?php
+                        $itinerary = get_post_meta($post_id, 'mpm_repeteable_fields', true);
+                        $count = count($itinerary);
+                    ?>
+                    <div class="col-days">
+                        <div class="days-title">Days</div>
+                        <?php
+                            for($i=0; $i<$count; $i++) { 
+                                echo '<div class="data">'.$itinerary[$i]['days'].'</div>';
+                            }
+                        ?>
+                    </div>
+                    <div class="col-places">
+                        <div class="places-title">Places</div>
+                        <?php
+                            for($i=0; $i<$count; $i++) { 
+                                if(empty($itinerary[$i]['places'])) {
+                                    echo '<div class="data">NULL</div>';
+                                } else {
+                                    echo '<div class="data">'.$itinerary[$i]['places'].'</div>';
+                                }
+                            }
+                        ?>
+                    </div>
+                </div>
+            </div>
             <?php
+        }
+        
+        /**
+         *  Función que activa el plugin
+         */
+        function mpm_activation_plugin() {
+            flush_rewrite_rules();
+        }
+        
+        /**
+         *  Función que desactiva el plugin
+         */
+        function mpm_deactivation_plugin() {
+            flush_rewrite_rules();
         }
     }
     
     $review = new Reviews();
     $review->execute_actions();
+    
+    // Registramos los hooks para lanzar código cuando se active o desactive el plugin
+    //                       <archivo del plugin>, <callback>
+    register_activation_hook(__FILE__, array($review, 'mpm_activation_plugin'));
+    register_deactivation_hook(__FILE__, array($review, 'mpm_deactivation_plugin'));
