@@ -451,7 +451,19 @@
                     </div>
                     <div class="rating">
                         <div>Rating:</div>
-                        <div class="data"><?php echo get_post_meta($post_id, 'mpm_rating', true)?></div>
+                        <div>
+                            <?php
+                                $rating = get_post_meta($post_id, 'mpm_rating', true);
+                                for($i=0; $i<5; $i++) {
+                                    if($i<$rating) {
+                                        echo '<span class="dashicons dashicons-star-filled"></span>';
+                                    }
+                                    else {
+                                        echo '<span class="dashicons dashicons-star-empty"></span>';
+                                    }
+                                }
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
